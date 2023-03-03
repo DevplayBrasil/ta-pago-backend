@@ -48,11 +48,12 @@ Aplicação backend em desenvolvimento ao vivo no Devplay!
   - Implementar testes unitários.
   
 ## Como colocar pra funcionar!
-    - Configure seu arquivo `.env` para que comporte as chaves necessárias como exemplificado no arquivo `.env.example`
-    - Por via das dúvidas, execute os comandos relativos ao Prisma para o banco de dados não relacional funcionar como esperado
-        - npx prisma generate
-    - É isso! Agora é só executar o comando `npm run dev` 🔥
-    
+
+- Configure seu arquivo `.env` para que comporte as chaves necessárias como exemplificado no arquivo `.env.example`
+- Por via das dúvidas, execute os comandos relativos ao Prisma para o banco de dados não relacional funcionar como esperado
+- npx prisma generate
+- É isso! Agora é só executar o comando `npm run dev` 🔥
+
 <br><br><br>
 ##### Made with 💜 by [Jhonatan](https://github.com/jhonatanjunio)Recompensas:
 
