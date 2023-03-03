@@ -1,0 +1,145 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String @unique
+  password String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  friends          Friend[]
+  interactions     FeedInteraction[]
+  feeds            Feed[]
+  notifications    Notification[]
+  goals            Goal[]
+  group_goals      GroupGoal[]
+  group_goal_users GroupGoalUser[]
+
+  @@map("users")
+}
+
+model Goal {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  user_id       String         @db.ObjectId
+  weekly_goal   Int?
+  monthly_goal  Int?
+  yearly_goal   Int?
+  goal_type     GoalVisibility
+  status        GoalStatus
+  current_strek Int            @default(0)
+  max_streak    Int            @default(0)
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("goals")
+}
+
+model GroupGoal {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  created_by   String     @db.ObjectId
+  weekly_goal  Int?
+  monthly_goal Int?
+  yearly_goal  Int?
+  status       GoalStatus
+  start_date   DateTime
+  end_date     DateTime
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  creator          User            @relation(fields: [created_by], references: [id])
+  group_goal_users GroupGoalUser[]
+
+  @@map("group_goals")
+}
+
+model GroupGoalUser {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  user_id       String @db.ObjectId
+  group_goal_id String @db.ObjectId
+  left_date     DateTime?
+  current_strek Int            @default(0)
+  max_streak    Int            @default(0)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user  User      @relation(fields: [user_id], references: [id])
+  group GroupGoal @relation(fields: [group_goal_id], references: [id])
+
+  @@map("group_goal_users")
+}
+
+model Friend {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String   @db.ObjectId
+  friends    String[]
+  updated_at DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("friends")
+}
+
+model Feed {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  user_id      String            @db.ObjectId
+  description  String
+  interactions FeedInteraction[]
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("feeds")
+}
+
+model FeedInteraction {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  feed_id String @db.ObjectId
+  user_id String @db.ObjectId
+
+  feed Feed @relation(fields: [feed_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("feed_interactions")
+}
+
+model Notification {
+  id      String            @id @default(auto()) @map("_id") @db.ObjectId
+  type    NotificationTypes
+  user_id String?           @db.ObjectId
+  read_by String[]
+  content String
+
+  created_at DateTime @default(now())
+
+  user User? @relation(fields: [user_id], references: [id])
+
+  @@map("notifications")
+}
+
+enum NotificationTypes {
+  USER
+  GLOBAL
+}
+
+enum GoalVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum GoalStatus {
+  OPEN
+  RUNNING
+  CLOSED
+}
+
+// exercises, goals, friends, group_goals, group_goals_users, feed, feed_interactions, notifications, rewards
