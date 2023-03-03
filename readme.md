@@ -55,5 +55,4 @@ Aplicação backend em desenvolvimento ao vivo no Devplay!
 - É isso! Agora é só executar o comando `npm run dev` 🔥
 
 <br><br><br>
-##### Made with 💜 by [Jhonatan](https://github.com/jhonatanjunio)Recompensas:
-
+##### Made with 💜 by [Jhonatan](https://github.com/jhonatanjunio)
